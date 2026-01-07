@@ -1,18 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My API Docs</title>
-  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slab Inventory API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .copy-button {
+            position: relative;
+            float: right;
+            padding: 4px 8px;
+            margin: 4px;
+            background: #4990e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .copy-button:hover {
+            background: #357abd;
+        }
+        .copy-button:active {
+            background: #2d6599;
+        }
+        .copy-button.copied {
+            background: #49cc90;
+        }
+        .renderedMarkdown pre {
+            position: relative;
+        }
+    </style>
 </head>
 <body>
-  <div id="swagger-ui"></div>
+    <div id="swagger-ui"></div>
 
-  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
-  <script>
-    SwaggerUIBundle({
-      url: "openapi.yaml",
-      dom_id: "#swagger-ui"
-    });
-  </script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            SwaggerUIBundle({
+                url: "api-spec.yaml",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                onComplete: function() {
+                    addCopyButtons();
+                }
+            });
+
+            // Add copy buttons to all code blocks
+            function addCopyButtons() {
+                // Wait a bit for Swagger UI to render
+                setTimeout(() => {
+                    // Get the server URL from Swagger UI
+                    const serverSelect = document.querySelector('.servers select');
+                    let serverUrl = 'tesw'; // default fallback
+                    if (serverSelect && serverSelect.value) {
+                        serverUrl = serverSelect.value;
+                    }
+
+                    const codeBlocks = document.querySelectorAll('.renderedMarkdown pre code');
+                    codeBlocks.forEach((codeBlock) => {
+                        const pre = codeBlock.parentElement;
+
+                        // Update curl command with current server URL
+                        if (codeBlock.textContent.includes('curl -X POST')) {
+                            // Replace any existing URL with the current server URL
+                            const originalText = codeBlock.textContent;
+                            const updatedText = originalText.replace(/(curl -X POST\s+)[^\s]+(\/.+?)(\s|$)/, `$1${serverUrl}$2$3`);
+                            codeBlock.textContent = updatedText;
+                        }
+
+                        if (!pre.querySelector('.copy-button')) {
+                            const button = document.createElement('button');
+                            button.className = 'copy-button';
+                            button.textContent = 'Copy';
+                            button.onclick = function() {
+                                const text = codeBlock.textContent;
+                                navigator.clipboard.writeText(text).then(() => {
+                                    button.textContent = 'Copied!';
+                                    button.classList.add('copied');
+                                    setTimeout(() => {
+                                        button.textContent = 'Copy';
+                                        button.classList.remove('copied');
+                                    }, 2000);
+                                });
+                            };
+                            pre.insertBefore(button, codeBlock);
+                        }
+                    });
+                }, 500);
+            }
+
+            // Re-add buttons when expanding/collapsing sections
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.opblock-summary')) {
+                    setTimeout(addCopyButtons, 300);
+                }
+            });
+
+            // Update URLs when server changes
+            document.addEventListener('change', function(e) {
+                if (e.target.matches('.servers select')) {
+                    setTimeout(addCopyButtons, 100);
+                }
+            });
+        };
+    </script>
 </body>
 </html>
