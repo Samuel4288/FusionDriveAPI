@@ -269,7 +269,7 @@ paths:
     post:
       summary: Update Slabs
       description: |
-        Updates status and other properties of existing slabs
+        Update status of slab: 0 -> Stock,1-> Sold, 2->Reserved,3->Consumed
 
         **Example curl command:**
         ```
@@ -297,11 +297,11 @@ paths:
                 Slabs:
                   type: string
                   description: JSON array of slab objects with ID and Status fields
-                  example: '[{"ID":1,"Status":2},{"ID":5,"Status":4}]'
+                  example: '[{"ID":1,"Status":2},{"ID":5,"Status":3}]'
             example:
               LicenseID: myLicense
               Password: myPassword
-              Slabs: '[{"ID":1,"Status":2},{"ID":5,"Status":4}]'
+              Slabs: '[{"ID":1,"Status":2},{"ID":5,"Status":3}]'
       responses:
         '200':
           description: Successful response
@@ -319,7 +319,7 @@ paths:
       summary: Add Slabs
       description: |
         Adds new slabs to inventory with automatic stone name and class creation if needed. Maximum 5 slabs per request.
-
+        Slab Object{Reference,Material,StoneName,ClassName,Finishing,Thickness}All required. SpecialPrice,BlockName,JobID are optional
         **Example curl command:**
         ```
         curl -X POST https://your-api-domain.com/AddSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"Material\":\"Granite\",\"StoneName\":\"Black Galaxy\",\"ClassName\":\"Premium\",\"Finishing\":\"Polished\",\"Thickness\":\"20\",\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
