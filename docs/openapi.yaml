@@ -4,18 +4,24 @@ info:
   description: API for managing stone slabs, inventory, and catalog information
   version: 1.0.0
 servers:
-  - url: https://your-api-domain.com
+  - url: https://fusiondriveapi.samuel-63b.workers.dev
     description: Production server
 
 paths:
   /GetRequirements:
     post:
       summary: Get Requirements
-      description: Retrieves material types, finishings, and thickness options available in the inventory
+      description: |
+        Retrieves material types, finishings, and thickness options available in the inventory
+
+        **Example curl command:**
+        ```
+        curl -X POST tesw/GetRequirements -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
+        ```
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -56,11 +62,17 @@ paths:
   /GetSlabBySerialNumber:
     post:
       summary: Get Slab by Serial Number
-      description: Retrieves detailed information about a specific slab using its reference/serial number
+      description: |
+        Retrieves detailed information about a specific slab using its reference/serial number
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/GetSlabBySerialNumber -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&SerialNumber=REF001"
+        ```
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -152,11 +164,17 @@ paths:
   /GetRemnantsByParentID:
     post:
       summary: Get Remnants by Parent ID
-      description: Retrieves all remnant pieces associated with a parent slab
+      description: |
+        Retrieves all remnant pieces associated with a parent slab
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/GetRemnantsByParentID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ParentSlabID=12345"
+        ```
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -250,7 +268,13 @@ paths:
   /UpdateSlabs:
     post:
       summary: Update Slabs
-      description: Updates status and other properties of existing slabs
+      description: |
+        Updates status and other properties of existing slabs
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/UpdateSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"ID\":1,\"Status\":2},{\"ID\":5,\"Status\":4}]"
+        ```
       requestBody:
         required: true
         content:
@@ -265,33 +289,19 @@ paths:
                 LicenseID:
                   type: string
                   description: License identifier
+                  example: myLicense
                 Password:
                   type: string
                   description: Authentication password
+                  example: myPassword
                 Slabs:
                   type: string
                   description: JSON array of slab objects with ID and Status fields
                   example: '[{"ID":1,"Status":2},{"ID":5,"Status":4}]'
-                UserID:
-                  type: string
-                  description: User identifier
-                  default: "0"
-                WinType:
-                  type: string
-                  description: Window type
-                  default: "2"
-                ProjectID:
-                  type: string
-                  description: Project identifier
-                  default: "0"
-                ProjectSequenceID:
-                  type: string
-                  description: Project sequence identifier
-                  default: "0"
-                Note:
-                  type: string
-                  description: Additional notes
-                  default: "0"
+            example:
+              LicenseID: myLicense
+              Password: myPassword
+              Slabs: '[{"ID":1,"Status":2},{"ID":5,"Status":4}]'
       responses:
         '200':
           description: Successful response
@@ -307,7 +317,13 @@ paths:
   /AddSlabs:
     post:
       summary: Add Slabs
-      description: Adds new slabs to inventory with automatic stone name and class creation if needed. Maximum 5 slabs per request.
+      description: |
+        Adds new slabs to inventory with automatic stone name and class creation if needed. Maximum 5 slabs per request.
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/AddSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"Material\":\"Granite\",\"StoneName\":\"Black Galaxy\",\"ClassName\":\"Premium\",\"Finishing\":\"Polished\",\"Thickness\":\"20\",\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
+        ```
       requestBody:
         required: true
         content:
@@ -322,26 +338,19 @@ paths:
                 LicenseID:
                   type: string
                   description: License identifier
+                  example: myLicense
                 Password:
                   type: string
                   description: Authentication password
+                  example: myPassword
                 Slabs:
                   type: string
                   description: JSON array of slab objects (max 5 slabs)
-                  example: |
-                    [
-                      {
-                        "Reference": "REF001",
-                        "Material": "Granite",
-                        "StoneName": "Black Galaxy",
-                        "ClassName": "Premium",
-                        "Finishing": "Polished",
-                        "Thickness": "20",
-                        "Width": 120.5,
-                        "Height": 280.0,
-                        "BlockName": "Block A"
-                      }
-                    ]
+                  example: '[{"Reference":"REF001","Material":"Granite","StoneName":"Black Galaxy","ClassName":"Premium","Finishing":"Polished","Thickness":"20","Width":120.5,"Height":280.0,"BlockName":"Block A"}]'
+            example:
+              LicenseID: myLicense
+              Password: myPassword
+              Slabs: '[{"Reference":"REF001","Material":"Granite","StoneName":"Black Galaxy","ClassName":"Premium","Finishing":"Polished","Thickness":"20","Width":120.5,"Height":280.0,"BlockName":"Block A"}]'
       responses:
         '200':
           description: Successful response
@@ -366,7 +375,13 @@ paths:
   /addSlabsDirect:
     post:
       summary: Add Slabs Direct
-      description: Adds new slabs with pre-validated ClassIDs. Faster than AddSlabs but requires ClassID. Maximum 40 slabs per request.
+      description: |
+        Adds new slabs with pre-validated ClassIDs. Faster than AddSlabs but requires ClassID. Maximum 40 slabs per request.
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/addSlabsDirect -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"ClassID\":12345,\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
+        ```
       requestBody:
         required: true
         content:
@@ -381,22 +396,19 @@ paths:
                 LicenseID:
                   type: string
                   description: License identifier
+                  example: myLicense
                 Password:
                   type: string
                   description: Authentication password
+                  example: myPassword
                 Slabs:
                   type: string
                   description: JSON array of slab objects with ClassID already set (max 40 slabs)
-                  example: |
-                    [
-                      {
-                        "Reference": "REF001",
-                        "ClassID": 12345,
-                        "Width": 120.5,
-                        "Height": 280.0,
-                        "BlockName": "Block A"
-                      }
-                    ]
+                  example: '[{"Reference":"REF001","ClassID":12345,"Width":120.5,"Height":280.0,"BlockName":"Block A"}]'
+            example:
+              LicenseID: myLicense
+              Password: myPassword
+              Slabs: '[{"Reference":"REF001","ClassID":12345,"Width":120.5,"Height":280.0,"BlockName":"Block A"}]'
       responses:
         '200':
           description: Successful response
@@ -421,11 +433,17 @@ paths:
   /getInventoryCatalog:
     post:
       summary: Get Inventory Catalog
-      description: Retrieves complete denormalized catalog of all stone classes with material, finishing, and thickness information
+      description: |
+        Retrieves complete denormalized catalog of all stone classes with material, finishing, and thickness information
+
+        **Example curl command:**
+        ```
+        curl -X POST https://your-api-domain.com/getInventoryCatalog -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
+        ```
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
