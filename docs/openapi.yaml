@@ -273,7 +273,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/UpdateSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"ID\":1,\"Status\":2},{\"ID\":5,\"Status\":4}]"
+        curl -X POST https://your-api-domain.com/UpdateSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"ID\":1,\"Status\":2},{\"ID\":5,\"Status\":3}]"
         ```
       requestBody:
         required: true
@@ -367,6 +367,20 @@ paths:
                         type: string
                         example: "All references already exist"
                   - type: object
+                    properties:
+                        id: 
+                            type: integer
+                        msg: 
+                            type: string
+                        lastid: 
+                            type: integer
+                        thumbnail: 
+                            type: string
+                    example:
+                    id: 1
+                    msg: ""
+                    lastid: 2043797
+                    thumbnail: ""
         '400':
           description: Missing or invalid parameters, or exceeded 5 slab limit
         '500':
@@ -425,6 +439,20 @@ paths:
                         type: string
                         example: "All references already exist"
                   - type: object
+                    properties:
+                        id: 
+                            type: integer
+                        msg: 
+                            type: string
+                        lastid: 
+                            type: integer
+                        thumbnail: 
+                            type: string
+                    example:
+                    id: 1
+                    msg: ""
+                    lastid: 2043797
+                    thumbnail: ""
         '400':
           description: Invalid parameters - missing ClassID, exceeded 40 slab limit, or duplicate references
         '500':
