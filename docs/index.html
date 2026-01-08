@@ -37,14 +37,30 @@
     </style>
 </head>
 <body>
-    <div id="swagger-ui"></div>
 
+    <div id="swagger-ui"></div>
+	<html>
+	<div style="font-family: 'Open Sans', sans-serif; line-height: 1.5; color: #333;text-align:center">
+	<p>Some notes: 
+	<p> Material, thickness and finishing must be retrieved from GetRequirements function.(only pick name property,not ID)<br>
+	Those are lists that cannot be edited and are common to all clients<br>
+	Only StoneName and Classname are unique to each client.
+	<p>GetSlabBySerialNumber can have mutliple slabs,scanner allows duplicates.<p> Client must be organized and keep one only.
+    <p>AddSlabs function returns id of the slab just added, but only when one is added. If multiple are added, only last ID is showed.
+	<p>It is recommended to add one at a time to keep the ID. If multiple are added,you can retrieve the ID by using GetSlabBySerialNumber.
+	<p>For adding Slabs,function addSlabsDirect is considerably faster than AddSlabs, but requires to fetch ClassID before sending the slabs.
+	<p>Function getInventoryCatalog returns all Material,StoneName,Classname,Thickness,Finishing and ClassID so you can check easily.
+	<p>Reason is that ClassID contains Material,StoneName,Classname,Thickness,Finishing. 
+	<p>AddSlabs is slower because it needs to create the classID(or check if it exists) before adding the slab.
+	</div>
+	</html>
     <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
     <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
     <script>
+	
         window.onload = function() {
             SwaggerUIBundle({
-                url: "openapi.yaml",
+                url: "api-spec.yaml",
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [
