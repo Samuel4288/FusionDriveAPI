@@ -16,7 +16,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST tesw/GetRequirements -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetRequirements -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
         ```
       requestBody:
         required: true
@@ -67,7 +67,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/GetSlabBySerialNumber -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&SerialNumber=REF001"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabBySerialNumber -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&SerialNumber=REF001"
         ```
       requestBody:
         required: true
@@ -169,7 +169,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/GetRemnantsByParentID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ParentSlabID=12345"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetRemnantsByParentID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ParentSlabID=12345"
         ```
       requestBody:
         required: true
@@ -273,7 +273,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/UpdateSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"ID\":1,\"Status\":2},{\"ID\":5,\"Status\":3}]"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/UpdateSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"ID\":1,\"Status\":2},{\"ID\":5,\"Status\":3}]"
         ```
       requestBody:
         required: true
@@ -322,7 +322,7 @@ paths:
         Slab Object{Reference,Material,StoneName,ClassName,Finishing,Thickness}All required. SpecialPrice,BlockName,JobID are optional
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/AddSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"Material\":\"Granite\",\"StoneName\":\"Black Galaxy\",\"ClassName\":\"Premium\",\"Finishing\":\"Polished\",\"Thickness\":\"20\",\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/AddSlabs -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"Material\":\"Granite\",\"StoneName\":\"Black Galaxy\",\"ClassName\":\"Premium\",\"Finishing\":\"Polished\",\"Thickness\":\"20\",\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
         ```
       requestBody:
         required: true
@@ -394,7 +394,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/addSlabsDirect -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"ClassID\":12345,\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/addSlabsDirect -F "LicenseID=myLicense" -F "Password=myPassword" -F "Slabs=[{\"Reference\":\"REF001\",\"ClassID\":12345,\"Width\":120.5,\"Height\":280.0,\"BlockName\":\"Block A\"}]"
         ```
       requestBody:
         required: true
@@ -466,7 +466,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://your-api-domain.com/getInventoryCatalog -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/getInventoryCatalog -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword"
         ```
       requestBody:
         required: true
