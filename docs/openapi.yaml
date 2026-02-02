@@ -161,6 +161,110 @@ paths:
         '500':
           description: Server error
 
+  /GetSlabByID:
+    post:
+      summary: Get Slab by ID
+      description: |
+        Retrieves detailed information about a specific slab using its reference/serial number
+
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabByID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ID=1990533"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - ID
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                ID:
+                  type: string
+                  description: Slab ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: string
+                    example: "No ID found"
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        BlockName:
+                          type: string
+                        Reference:
+                          type: string
+                        JobID:
+                          type: string
+                        Width:
+                          type: number
+                        Height:
+                          type: number
+                        ReceiptWidth:
+                          type: number
+                        ReceiptHeight:
+                          type: number
+                        RegDate:
+                          type: string
+                        ParentSlabID:
+                          type: integer
+                        IsRemnant:
+                          type: integer
+                        CostPerM2:
+                          type: number
+                        thumbnail:
+                          type: string
+                        MatchURL:
+                          type: string
+                        EQURL:
+                          type: string
+                        EdgeURL:
+                          type: string
+                        OptimizedURL:
+                          type: string
+                        DrawingInkURL:
+                          type: string
+                        thumbnailClass:
+                          type: string
+                        ClassFileURL:
+                          type: string
+                        RemnantPoints:
+                          type: string
+                        Status:
+                          type: integer
+                        StoneTypeName:
+                          type: string
+                        StoneName:
+                          type: string
+                        ClassName:
+                          type: string
+                        FinishingName:
+                          type: string
+                        ThicknessName:
+                          type: string
+                        ProjectID:
+                          type: string  
+        '400':
+          description: Missing or invalid parameters
+        '500':
+          description: Server error
+          
   /GetRemnantsByParentID:
     post:
       summary: Get Remnants by Parent ID
