@@ -371,7 +371,7 @@ paths:
 
   /UpdateSlabs:
     post:
-      summary: Update Slabs
+      summary: Update Slabs Status
       description: |
         Update status of slab: 0 -> Stock,1-> Sold, 2->Reserved,3->Consumed
 
