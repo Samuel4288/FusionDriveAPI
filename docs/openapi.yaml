@@ -164,7 +164,7 @@ paths:
 
   /GetSlabsByBlockname:
     post:
-      summary: Get Slab by Blockname
+      summary: Get Slabs by Blockname
       description: |
         Retrieves detailed information about specific slabs using its BlockName
 
@@ -263,7 +263,108 @@ paths:
           description: Missing or invalid parameters
         '500':
           description: Server error        
+  /GetSlabsByJobID:
+    post:
+      summary: Get Slabs by JobID
+      description: |
+        Retrieves detailed information about specific slabs using its JobID
 
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabsByJobID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&JobID=testes"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - JobID
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                BlockName:
+                  type: string
+                  description: JobID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: string
+                    example: "No JobID found"
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        BlockName:
+                          type: string
+                        Reference:
+                          type: string
+                        JobID:
+                          type: string
+                        Width:
+                          type: number
+                        Height:
+                          type: number
+                        ReceiptWidth:
+                          type: number
+                        ReceiptHeight:
+                          type: number
+                        RegDate:
+                          type: string
+                        ParentSlabID:
+                          type: integer
+                        IsRemnant:
+                          type: integer
+                        CostPerM2:
+                          type: number
+                        thumbnail:
+                          type: string
+                        MatchURL:
+                          type: string
+                        EQURL:
+                          type: string
+                        EdgeURL:
+                          type: string
+                        OptimizedURL:
+                          type: string
+                        DrawingInkURL:
+                          type: string
+                        thumbnailClass:
+                          type: string
+                        ClassFileURL:
+                          type: string
+                        RemnantPoints:
+                          type: string
+                        Status:
+                          type: integer
+                        StoneTypeName:
+                          type: string
+                        StoneName:
+                          type: string
+                        ClassName:
+                          type: string
+                        FinishingName:
+                          type: string
+                        ThicknessName:
+                          type: string
+        '400':
+          description: Missing or invalid parameters
+        '500':
+          description: Server error  
+  
   /GetSlabByID:
     post:
       summary: Get Slab by ID
