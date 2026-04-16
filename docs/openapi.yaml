@@ -290,7 +290,7 @@ paths:
                 Password:
                   type: string
                   description: Authentication password
-                BlockName:
+                JobID:
                   type: string
                   description: JobID
       responses:
