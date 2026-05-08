@@ -679,7 +679,7 @@ paths:
     post:
       summary: Update Slabs Status
       description: |
-        Update status of slab: 0 -> Stock,1-> Sold, 2->Reserved,3->Consumed
+        Update status of slab: 0 -> Stock,1-> Sold, 2->Reserved,3->Consumed, 8-> Pre-Reserved
 
         **Example curl command:**
         ```
