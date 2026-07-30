@@ -471,8 +471,7 @@ paths:
     post:
       summary: Get Slab by ID
       description: |
-        Retrieves detailed information about a specific slab using its reference/serial number
-
+        Retrieves detailed information about a specific slab using its ID
         **Example curl command:**
         ```
         curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabByID -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ID=1990533"
