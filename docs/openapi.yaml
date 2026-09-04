@@ -109,7 +109,107 @@ paths:
           description: Missing or invalid parameters
         '500':
           description: Server error
+  /GetSlabsByDate:
+    post:
+      summary: Get Slabs By Date
+      description: |
+        Retrieves Slabs scanned in a particular Day
 
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabsByDate -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&Date=2026-08-05"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - Date
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                Date:
+                  type: string
+                  description: Date YY-MM-DD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: string
+                    example: "No Slabs found"
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        BlockName:
+                          type: string
+                        Reference:
+                          type: string
+                        JobID:
+                          type: string
+                        Width:
+                          type: number
+                        Height:
+                          type: number
+                        ReceiptWidth:
+                          type: number
+                        ReceiptHeight:
+                          type: number
+                        RegDate:
+                          type: string
+                        ParentSlabID:
+                          type: integer
+                        IsRemnant:
+                          type: integer
+                        CostPerM2:
+                          type: number
+                        thumbnail:
+                          type: string
+                        MatchURL:
+                          type: string
+                        EQURL:
+                          type: string
+                        EdgeURL:
+                          type: string
+                        OptimizedURL:
+                          type: string
+                        DrawingInkURL:
+                          type: string
+                        thumbnailClass:
+                          type: string
+                        ClassFileURL:
+                          type: string
+                        RemnantPoints:
+                          type: string
+                        Status:
+                          type: integer
+                        StoneTypeName:
+                          type: string
+                        StoneName:
+                          type: string
+                        ClassName:
+                          type: string
+                        FinishingName:
+                          type: string
+                        ThicknessName:
+                          type: string
+        '400':
+          description: Missing or invalid parameters
+        '500':
+          description: Server error
   /GetRequirements:
     post:
       summary: Get Requirements
