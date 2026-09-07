@@ -1040,7 +1040,421 @@ paths:
           description: Missing or invalid credentials
         '500':
           description: Server error
+   /AddWarehouse:
+    post:
+      summary: Add Warehouse
+      description: |
+        Creates a warehouse. If a warehouse with the same name already exists it is
+        returned untouched and nothing is created. Name matching ignores case and
+        surrounding spaces, so "Novo" and " novo " are the same warehouse.
 
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/addAWarehouse -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&Name=Warehouse 3"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - Name
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                Name:
+                  type: string
+                  description: Warehouse name
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                    description: true when a new warehouse was created, false when the name already existed
+                  warehouse:
+                    type: object
+                    properties:
+                      ID:
+                        type: integer
+                      Name:
+                        type: string
+                  reason:
+                    type: string
+                    enum:
+                      - created
+                      - duplicate
+              example:
+                created: true
+                warehouse:
+                  ID: 1483
+                  Name: "Warehouse 3"
+                reason: "created"
+        '400':
+          description: Missing or invalid parameters
+        '500':
+          description: Server error
+/addASection:
+    post:
+      summary: Add Section
+      description: |
+        Creates a section inside a warehouse. The warehouse is given by name and
+        resolved to its ID; if no warehouse matches, the request fails and the error
+        lists the available warehouse names.
+
+        A section name only has to be unique within its own warehouse, so the same
+        section name may exist in two different warehouses.
+
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/addASection -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&Name=Section 1&WarehouseName=Warehouse 1"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - Name
+                - WarehouseName
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                Name:
+                  type: string
+                  description: Section name
+                WarehouseName:
+                  type: string
+                  description: Name of an existing warehouse this section belongs to
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                    description: true when a new section was created, false when the name already existed in that warehouse
+                  section:
+                    type: object
+                    properties:
+                      ID:
+                        type: integer
+                      Name:
+                        type: string
+                      WarehouseID:
+                        type: integer
+                  reason:
+                    type: string
+                    enum:
+                      - created
+                      - duplicate
+              example:
+                created: true
+                section:
+                  ID: 2180
+                  Name: "Section 1"
+                  WarehouseID: 901
+                reason: "created"
+        '400':
+          description: Missing or invalid parameters, or warehouse name not found
+        '500':
+          description: Server error
+
+/addRowAndSpot:
+    post:
+      summary: Add Row
+      description: |
+        Creates a row inside a section, together with its first range of spots. The
+        warehouse and section are given by name and resolved to their IDs.
+
+        Spots are generated from the range: SpotFrom 1, SpotTo 20 and SpotChar A
+        produce 1A, 2A ... 20A.
+
+        If the row already exists this returns it with created=false and creates
+        nothing - use /AddSpots to add a further range to an existing row.
+
+        Limits: a single call may create at most 200 spots, and SpotChar must be
+        1 to 10 letters (A-Z, case insensitive, stored uppercase).
+
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/addRowAndSpot -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&Name=Row 3&WarehouseName=Warehouse 1&SectionName=Section 1&SpotFrom=1&SpotTo=20&SpotChar=A"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - Name
+                - WarehouseName
+                - SectionName
+                - SpotFrom
+                - SpotTo
+                - SpotChar
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                Name:
+                  type: string
+                  description: Row name
+                WarehouseName:
+                  type: string
+                  description: Name of an existing warehouse
+                SectionName:
+                  type: string
+                  description: Name of an existing section inside that warehouse
+                SpotFrom:
+                  type: integer
+                  description: First spot number, 1 or greater
+                  example: 1
+                SpotTo:
+                  type: integer
+                  description: Last spot number, not lower than SpotFrom
+                  example: 20
+                SpotChar:
+                  type: string
+                  description: Letters appended to each spot number, 1 to 10 characters A-Z
+                  example: "A"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                    description: true when the row was created, false when it already existed
+                  row:
+                    type: object
+                    properties:
+                      ID:
+                        type: integer
+                      Name:
+                        type: string
+                      WarehouseID:
+                        type: integer
+                      SectionID:
+                        type: integer
+                  spotsCreated:
+                    type: integer
+                    description: number of spots generated, 0 when the row already existed
+                  itemsspots:
+                    type: array
+                    description: the spot records created, as returned by the inventory API
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        Name:
+                          type: string
+                        RowID:
+                          type: integer
+                        SectionID:
+                          type: integer
+                        WarehouseID:
+                          type: integer
+                  reason:
+                    type: string
+                    enum:
+                      - created
+                      - exists
+              example:
+                created: true
+                row:
+                  ID: 7505
+                  Name: "Row 3"
+                  WarehouseID: 901
+                  SectionID: 2180
+                spotsCreated: 2
+                itemsspots:
+                  - ID: 154194
+                    Name: "1A"
+                    RowID: 7505
+                    SectionID: 2180
+                    WarehouseID: 901
+                  - ID: 154195
+                    Name: "2A"
+                    RowID: 7505
+                    SectionID: 2180
+                    WarehouseID: 901
+                reason: "created"
+        '400':
+          description: Missing or invalid parameters, warehouse or section name not found, spot range over 200, or invalid SpotChar
+        '500':
+          description: Server error
+
+/addASpot:
+    post:
+      summary: Add Spots
+      description: |
+        Adds a further range of spots to a row that already exists. The warehouse,
+        section and row are all given by name and resolved to their IDs; if the row
+        does not exist the request fails and the error lists the rows available in
+        that section - use /AddRow to create it.
+
+        Spots are generated from the range: SpotFrom 1, SpotTo 20 and SpotChar B
+        produce 1B, 2B ... 20B.
+
+        If every spot in the requested range already exists on the row, nothing is
+        created and created=false is returned. If only some of them exist the request
+        fails rather than creating a partial range.
+
+        Limits: a single call may create at most 200 spots, and SpotChar must be
+        1 to 10 letters (A-Z, case insensitive, stored uppercase).
+
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/addASpot -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&Name=Row 3&WarehouseName=Warehouse 1&SectionName=Section 1&SpotFrom=1&SpotTo=20&SpotChar=B&RowName=Row 1"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - Name
+                - WarehouseName
+                - SectionName
+                - SpotFrom
+                - SpotTo
+                - SpotChar
+		- RowName	
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                Name:
+                  type: string
+                  description: Name of an existing row the spots are added to
+                WarehouseName:
+                  type: string
+                  description: Name of an existing warehouse
+                SectionName:
+                  type: string
+                  description: Name of an existing section inside that warehouse
+		RowName:
+                  type: string
+                  description: Name of an existing row inside that warehouse
+                SpotFrom:
+                  type: integer
+                  description: First spot number, 1 or greater
+                  example: 1
+                SpotTo:
+                  type: integer
+                  description: Last spot number, not lower than SpotFrom
+                  example: 20
+                SpotChar:
+                  type: string
+                  description: Letters appended to each spot number, 1 to 10 characters A-Z
+                  example: "B"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                    description: true when spots were created, false when they all already existed
+                  row:
+                    type: object
+                    properties:
+                      ID:
+                        type: integer
+                      Name:
+                        type: string
+                      WarehouseID:
+                        type: integer
+                      SectionID:
+                        type: integer
+                  spotsCreated:
+                    type: integer
+                  itemsspots:
+                    type: array
+                    description: the spot records created, as returned by the inventory API
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        Name:
+                          type: string
+                        RowID:
+                          type: integer
+                        SectionID:
+                          type: integer
+                        WarehouseID:
+                          type: integer
+                  reason:
+                    type: string
+                    enum:
+                      - created
+                      - duplicate
+              example:
+                created: true
+                row:
+                  ID: 7505
+                  Name: "Row 3"
+                  WarehouseID: 901
+                  SectionID: 2180
+                spotsCreated: 2
+                itemsspots:
+                  - ID: 154194
+                    Name: "1B"
+                    RowID: 7505
+                    SectionID: 2180
+                    WarehouseID: 901
+                  - ID: 154195
+                    Name: "2B"
+                    RowID: 7505
+                    SectionID: 2180
+                    WarehouseID: 901
+                reason: "created"
+        '400':
+          description: Missing or invalid parameters, warehouse/section/row name not found, spot range over 200, invalid SpotChar, or a partial overlap with existing spots
+        '500':
+          description: Server error
+          
 components:
   schemas:
     Error:
