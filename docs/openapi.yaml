@@ -1040,7 +1040,7 @@ paths:
           description: Missing or invalid credentials
         '500':
           description: Server error
-/addAWarehouse:
+  /addAWarehouse:
     post:
       summary: Add Warehouse
       description: |
@@ -1105,7 +1105,7 @@ paths:
           description: Missing or invalid parameters
         '500':
           description: Server error
-/addASection:
+  /addASection:
     post:
       summary: Add Section
       description: |
@@ -1181,7 +1181,7 @@ paths:
         '500':
           description: Server error
 
-/addRowAndSpot:
+  /addRowAndSpot:
     post:
       summary: Add Row
       description: |
@@ -1315,7 +1315,7 @@ paths:
         '500':
           description: Server error
 
-/addASpot:
+  /addASpot:
     post:
       summary: Add Spots
       description: |
