@@ -1040,7 +1040,7 @@ paths:
           description: Missing or invalid credentials
         '500':
           description: Server error
-/AddWarehouse:
+/addAWarehouse:
     post:
       summary: Add Warehouse
       description: |
@@ -1353,7 +1353,7 @@ paths:
                 - SpotFrom
                 - SpotTo
                 - SpotChar
-		- RowName	
+                - RowName
               properties:
                 LicenseID:
                   type: string
@@ -1370,9 +1370,6 @@ paths:
                 SectionName:
                   type: string
                   description: Name of an existing section inside that warehouse
-		RowName:
-                  type: string
-                  description: Name of an existing row inside that warehouse
                 SpotFrom:
                   type: integer
                   description: First spot number, 1 or greater
@@ -1385,6 +1382,10 @@ paths:
                   type: string
                   description: Letters appended to each spot number, 1 to 10 characters A-Z
                   example: "B"
+                RowName:
+                  type: string
+                  description: Name of an existing row inside that warehouse
+                  example: Row 1
       responses:
         '200':
           description: Successful response
