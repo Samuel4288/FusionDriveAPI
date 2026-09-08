@@ -1506,10 +1506,10 @@ paths:
                           type: integer
                         msg:
                           type: string
-                        Reference:
-                          lastid: string
-                        JobID:
-                          thumbnail: string
+                        lastid:
+                          type: string
+                        thumbnail:
+                          type: string
         '400':
           description: Missing or invalid parameters
         '500':
