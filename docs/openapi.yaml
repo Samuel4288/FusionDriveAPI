@@ -1456,6 +1456,65 @@ paths:
         '500':
           description: Server error
           
+  /EditWarehouseSpotIDInSlab:
+    post:
+      summary: Edit a WarehouseSpotID In a Slab
+      description: |
+        Updates a slab's spot using SpotID and Slab ID
+        **Example curl command:**
+        ```
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/EditWarehouseSpotIDInSlab -H "Content-Type: application/x-www-form-urlencoded" -d "LicenseID=myLicense&Password=myPassword&ID=1&WarehouseSpotID=1"
+        ```
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - LicenseID
+                - Password
+                - ID
+                - WarehouseSpotID
+              properties:
+                LicenseID:
+                  type: string
+                  description: License identifier
+                Password:
+                  type: string
+                  description: Authentication password
+                ID:
+                  type: string
+                  description: Slab ID
+                WarehouseSpotID:
+                  type: string
+                  description: WarehouseSpotID  
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: string
+                    example: "No ID found"
+                  - type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        msg:
+                          type: string
+                        Reference:
+                          lastid: string
+                        JobID:
+                          thumbnail: string
+        '400':
+          description: Missing or invalid parameters
+        '500':
+          description: Server error
+          
 components:
   schemas:
     Error:
