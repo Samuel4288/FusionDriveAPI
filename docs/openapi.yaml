@@ -19,7 +19,7 @@ paths:
 
         **Example curl command:**
         ```
-        curl -X POST https://myAPI.workers.dev/GetSlabsByStatus -F "LicenseID=myLicense" -F "Password=myPassword" -F "Status=0" -F "PageIndex=0"
+        curl -X POST https://fusiondriveapi.samuel-63b.workers.dev/GetSlabsByStatus -F "LicenseID=myLicense" -F "Password=myPassword" -F "Status=0" -F "PageIndex=0"
         ```
 
         **Example response when no Slabs are found:**
